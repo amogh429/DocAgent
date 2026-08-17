@@ -1,5 +1,5 @@
 import toolRegistry from "./toolRegistry.js";
-import toolDeclarations from "./toolDeclarations";
+import toolDeclarations from "./toolDeclarations.js";
 
 const MAX_STEPS = 10;
 
@@ -106,4 +106,4 @@ async function runAgentLoop(original_question, taskId) {
   return state;
 }
 
-export default runAgentLoop;
+export { runAgentLoop };
