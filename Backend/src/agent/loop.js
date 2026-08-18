@@ -97,8 +97,14 @@ async function runAgentLoop(original_question, taskId) {
       const textStep = response.steps.find(
         (step) => step.type === "model_output",
       );
-      state.final_answer = textStep.content[0].text;
-      state.status = "completed";
+
+      if (!textStep || !textStep.content?.length) {
+        state.status = "failed";
+        state.final_answer = "Gemini returned no final answer.";
+      } else {
+        state.final_answer = textStep.content[0].text;
+        state.status = "completed";
+      }
     }
   }
 
