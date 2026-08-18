@@ -55,7 +55,6 @@ async function runAgentLoop(original_question, taskId) {
 
   while (state.status === "running" && state.step_count < MAX_STEPS) {
     const response = await callGemini(state);
-    console.log(JSON.stringify(response, null, 2));
     state.last_interaction_id = response.id;
 
     const functionCallStep = response.steps.find(
@@ -95,7 +94,10 @@ async function runAgentLoop(original_question, taskId) {
       }
       state.step_count++;
     } else {
-      state.final_answer = response.output_text;
+      const textStep = response.steps.find(
+        (step) => step.type === "model_output",
+      );
+      state.final_answer = textStep.content[0].text;
       state.status = "completed";
     }
   }
