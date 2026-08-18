@@ -8,15 +8,15 @@ async function callGemini(state) {
 
   if (state.history.length === 0) {
     requestBody = {
-      model: "gemini-2.5-flash",
+      model: "gemini-3.6-flash",
       input: state.original_question,
       tools: toolDeclarations,
     };
   } else {
     const lastEntry = state.history[state.history.length - 1];
     requestBody = {
-      model: "gemini-2.5-flash",
-      previous_interaction_id: state.last_interaction._id,
+      model: "gemini-3.6-flash",
+      previous_interaction_id: state.last_interaction_id,
       tools: toolDeclarations,
       input: [
         {
@@ -33,7 +33,7 @@ async function callGemini(state) {
     {
       method: "POST",
       headers: {
-        Content_Type: "application/json",
+        "Content-Type": "application/json",
         "x-goog-api-key": process.env.GEMINI_API_KEY,
       },
       body: JSON.stringify(requestBody),
@@ -55,6 +55,7 @@ async function runAgentLoop(original_question, taskId) {
 
   while (state.status === "running" && state.step_count < MAX_STEPS) {
     const response = await callGemini(state);
+    console.log(JSON.stringify(response, null, 2));
     state.last_interaction_id = response.id;
 
     const functionCallStep = response.steps.find(
