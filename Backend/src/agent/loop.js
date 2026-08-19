@@ -39,7 +39,14 @@ async function callGemini(state) {
       body: JSON.stringify(requestBody),
     },
   );
-  return res.json();
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(
+      `Gemini API error (${res.status}): ${data.error?.message || "Unknown error"}`,
+    );
+  }
+  return data;
 }
 
 async function runAgentLoop(original_question, taskId) {
