@@ -93,7 +93,7 @@ async function runAgentLoop(original_question, taskId) {
         });
       }
       state.step_count++;
-    } else {
+    } else if (response.status === "completed") {
       const textStep = response.steps.find(
         (step) => step.type === "model_output",
       );
@@ -105,6 +105,9 @@ async function runAgentLoop(original_question, taskId) {
         state.final_answer = textStep.content[0].text;
         state.status = "completed";
       }
+    } else {
+      state.final_answer = `Gemini returned an unexpected status ${response.status}.`;
+      state.status = "failed";
     }
   }
 
