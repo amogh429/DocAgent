@@ -55,6 +55,12 @@ async function runAgentLoop(original_question, taskId) {
 
   while (state.status === "running" && state.step_count < MAX_STEPS) {
     const response = await callGemini(state);
+    if (!response.steps) {
+      console.log(JSON.stringify(response, null, 2));
+      throw new Error(
+        "Gemini call failed - see logged response above for details.",
+      );
+    }
     state.last_interaction_id = response.id;
 
     const functionCallStep = response.steps.find(
