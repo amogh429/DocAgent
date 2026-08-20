@@ -1,5 +1,5 @@
 async function runWebSearch({ query }) {
-  console.log("Tavily Key:", process.env.TAVILY_API_KEY);
+  // console.log("Tavily Key:", process.env.TAVILY_API_KEY);
   const res = await fetch("https://api.tavily.com/search", {
     method: "POST",
     headers: {
