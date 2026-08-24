@@ -1,6 +1,6 @@
 import toolRegistry from "./toolRegistry.js";
 import toolDeclarations from "./toolDeclarations.js";
-import { resolve } from "mathjs";
+import fetchWithRetry from "./fetchWithRetry.js";
 
 const MAX_STEPS = 10;
 
@@ -30,10 +30,7 @@ async function callGemini(state) {
     };
   }
 
-  const MAX_RETRIES = 3;
-
-  for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
-    const res = await fetch(
+    const data = await fetchWithRetry(
       "https://generativelanguage.googleapis.com/v1beta/interactions",
       {
         method: "POST",
@@ -44,24 +41,7 @@ async function callGemini(state) {
         body: JSON.stringify(requestBody),
       },
     );
-    const data = await res.json();
-
-    // Retry - logic
-    if (res.status >= 200 && res.status < 300) {
-      return data;
-    } else if (res.status === 429 || (res.status >= 500 && res.status < 600)) {
-      waitTime = 2 ** attempt * 1000;
-      console.log(
-        `Retryable error (${res.status}). Retrying in ${waitTime}ms...`,
-      );
-      await new Promise((resolve) => setTimeout(resolve, waitTime));
-    } else {
-      throw new Error(
-        `Gemini API error (${res.status}): ${data.error?.message || "Unknown error"}`,
-      );
-    }
-  }
-  throw new Error(`Gemini call failed after ${MAX_RETRIES} attempts...`);
+    return data;
 }
 
 async function runAgentLoop(original_question, taskId) {
@@ -78,7 +58,6 @@ async function runAgentLoop(original_question, taskId) {
   while (state.status === "running" && state.step_count < MAX_STEPS) {
     const response = await callGemini(state);
     if (!response.steps) {
-      // console.log(JSON.stringify(response, null, 2));
       throw new Error(
         "Gemini call failed - see logged response above for details.",
       );
