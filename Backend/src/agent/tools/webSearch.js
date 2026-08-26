@@ -1,7 +1,6 @@
-import fetchWithRetry from "./fetchWithRetry.js";
+import fetchWithRetry from "../fetchWithRetry.js";
 
 async function runWebSearch({ query }) {
-
   const data = await fetchWithRetry("https://api.tavily.com/search", {
     method: "POST",
     headers: {

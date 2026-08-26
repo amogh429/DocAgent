@@ -30,18 +30,18 @@ async function callGemini(state) {
     };
   }
 
-    const data = await fetchWithRetry(
-      "https://generativelanguage.googleapis.com/v1beta/interactions",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-goog-api-key": process.env.GEMINI_API_KEY,
-        },
-        body: JSON.stringify(requestBody),
+  const data = await fetchWithRetry(
+    "https://generativelanguage.googleapis.com/v1beta/interactions",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-goog-api-key": process.env.GEMINI_API_KEY,
       },
-    );
-    return data;
+      body: JSON.stringify(requestBody),
+    },
+  );
+  return data;
 }
 
 async function runAgentLoop(original_question, taskId) {
