@@ -4,13 +4,9 @@ import { Worker } from "bullmq";
 import { runAgentLoop } from "./agent/loop.js";
 import Task from "./models/Task.js";
 import connectDB from "./config/db.js";
+import connection from "./config/redis.js";
 
 await connectDB();
-
-const connection = {
-  host: "127.0.0.1",
-  port: 6379
-};
 
 const worker = new Worker(
   "agentQueue",
