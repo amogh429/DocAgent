@@ -1,7 +1,16 @@
+import dotenv from "dotenv";
+dotenv.config();
 import { Worker } from "bullmq";
 import { runAgentLoop } from "./agent/loop.js";
 import Task from "./models/Task.js";
-import { connection } from "mongoose";
+import connectDB from "./config/db.js";
+
+await connectDB();
+
+const connection = {
+  host: "127.0.0.1",
+  port: 6379
+};
 
 const worker = new Worker(
   "agentQueue",
