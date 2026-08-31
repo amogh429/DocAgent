@@ -20,6 +20,7 @@ const worker = new Worker(
         new: true,
         upsert: true,
       });
+      console.log(`Task ${taskId} saved with status: ${state.status}`);
     } catch (err) {
       console.error(`Worker crashed on task ${taskId}: `, err);
 

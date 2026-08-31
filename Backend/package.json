@@ -13,9 +13,11 @@
   "type": "module",
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
+    "bullmq": "^6.3.2",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "ioredis": "^6.0.0",
     "mathjs": "^15.2.0",
     "mongoose": "^9.9.2"
   },
