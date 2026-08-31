@@ -17,7 +17,7 @@ const worker = new Worker(
       const state = await runAgentLoop(original_question, taskId);
 
       await Task.findOneAndUpdate({ taskId }, state, {
-        new: true,
+        returnDocument: 'after',
         upsert: true,
       });
       console.log(`Task ${taskId} saved with status: ${state.status}`);
@@ -27,7 +27,7 @@ const worker = new Worker(
       await Task.findOneAndUpdate(
         { taskId },
         { status: "failed", final_answer: `Worker error: ${err.message}` },
-        { new: true, upsert: true },
+        { returnDocument: "after", upsert: true },
       );
     }
   },
