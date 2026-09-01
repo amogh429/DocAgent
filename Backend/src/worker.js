@@ -13,13 +13,17 @@ const worker = new Worker(
   async (job) => {
     const { original_question, taskId } = job.data;
 
-    try {
-      const state = await runAgentLoop(original_question, taskId);
+    const onStepComplete = async (state) => {
+      await Task.findOneAndUpdate(
+        { taskId },
+        state,
+        { returnDocument: "after", upsert: true }
+      );
+    };
 
-      await Task.findOneAndUpdate({ taskId }, state, {
-        returnDocument: 'after',
-        upsert: true,
-      });
+    try {
+      const state = await runAgentLoop(original_question, taskId, onStepComplete);
+      onStepComplete(state);
       console.log(`Task ${taskId} saved with status: ${state.status}`);
     } catch (err) {
       console.error(`Worker crashed on task ${taskId}: `, err);

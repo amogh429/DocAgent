@@ -44,7 +44,7 @@ async function callGemini(state) {
   return data;
 }
 
-async function runAgentLoop(original_question, taskId) {
+async function runAgentLoop(original_question, taskId, onStepComplete) {
   const state = {
     task_id: taskId,
     original_question,
@@ -115,6 +115,10 @@ async function runAgentLoop(original_question, taskId) {
     } else {
       state.final_answer = `Gemini returned an unexpected status ${response.status}.`;
       state.status = "failed";
+    }
+
+    if(onStepComplete){
+      onStepComplete(state);
     }
   }
 
