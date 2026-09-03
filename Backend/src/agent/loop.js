@@ -118,7 +118,7 @@ async function runAgentLoop(original_question, taskId, onStepComplete) {
     }
 
     if(onStepComplete){
-      onStepComplete(state);
+      await onStepComplete(state);
     }
   }
 
