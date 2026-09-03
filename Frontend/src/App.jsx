@@ -78,7 +78,7 @@ function App() {
 
       {/* Piece 2: Task Data */}
 
-      {taskData?.status === "running" &&(
+      {taskData?.status === "running" && (
         <div>
           <p>Agent is working...</p>
           {taskData.history?.map((entry, index) => (
@@ -98,4 +98,4 @@ function App() {
   );
 }
 
-export default App();
+export default App;
