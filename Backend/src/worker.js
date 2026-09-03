@@ -14,6 +14,9 @@ const worker = new Worker(
     const { original_question, taskId } = job.data;
 
     const onStepComplete = async (state) => {
+      console.log(
+        `[onStepComplete] taskId=${taskId} status=${state.status} step_count=${state.step_count}`,
+      );
       await Task.findOneAndUpdate({ taskId }, state, {
         returnDocument: "after",
         upsert: true,
@@ -27,7 +30,6 @@ const worker = new Worker(
         onStepComplete,
       );
       await onStepComplete(state);
-      console.log(`Task ${taskId} saved with status: ${state.status}`);
     } catch (err) {
       console.error(`Worker crashed on task ${taskId}: `, err);
 
