@@ -58,7 +58,7 @@ function App() {
       if (data.status !== "running") {
         clearInterval(intervalId);
       }
-    }, 2000);
+    }, 500);
 
     return () => {
       clearInterval(intervalId);
