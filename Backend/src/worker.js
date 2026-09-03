@@ -24,12 +24,7 @@ const worker = new Worker(
     };
 
     try {
-      const state = await runAgentLoop(
-        original_question,
-        taskId,
-        onStepComplete,
-      );
-      await onStepComplete(state);
+      await runAgentLoop(original_question, taskId, onStepComplete);
     } catch (err) {
       console.error(`Worker crashed on task ${taskId}: `, err);
 

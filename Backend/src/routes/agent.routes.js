@@ -27,7 +27,7 @@ router.get("/status/:taskId", async (req, res) => {
   }
 
   if (task.status === "running") {
-    return res.json({ status: task.status });
+    return res.json({ status: task.status, history: task.history });
   }
 
   return res.json(task);
