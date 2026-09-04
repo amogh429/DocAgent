@@ -76,6 +76,7 @@ async function runAgentLoop(original_question, taskId, onStepComplete) {
           type: "observation",
           name: functionCallStep.name,
           call_id: functionCallStep.id,
+          arguments: functionCallStep.arguments,
           result: `Error: No tool names "${functionCallStep.name}" exists`,
         });
         state.step_count++;
@@ -89,6 +90,7 @@ async function runAgentLoop(original_question, taskId, onStepComplete) {
           type: "observation",
           name: functionCallStep.name,
           call_id: functionCallStep.id,
+          arguments: functionCallStep.arguments,
           result: result,
         });
       } catch (err) {
@@ -96,6 +98,7 @@ async function runAgentLoop(original_question, taskId, onStepComplete) {
           type: "observation",
           name: functionCallStep.name,
           call_id: functionCallStep.id,
+          arguments: functionCallStep.arguments,
           result: err.message,
         });
       }
