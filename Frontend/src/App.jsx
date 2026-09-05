@@ -17,7 +17,7 @@ function App() {
 
     setIsLoading(true);
 
-    const res = await fetch("http://localhost:5000/api/agent/ask", {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/agent/ask`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -43,7 +43,7 @@ function App() {
 
     const intervalId = setInterval(async () => {
       const res = await fetch(
-        `http://localhost:5000/api/agent/status/${taskId}`,
+        `${import.meta.env.VITE_API_URL}/api/agent/status/${taskId}`,
       );
 
       if (!res.ok) {
